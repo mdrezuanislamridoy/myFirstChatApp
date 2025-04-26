@@ -28,7 +28,9 @@ const register = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
       maxAge: 3600000,
+      sameSite: "None",
     });
 
     await newUser.save();
@@ -71,9 +73,13 @@ const login = async (req, res) => {
     console.log(token);
     res.cookie("token", token, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
       maxAge: 3600000,
+      sameSite: "None",
     });
     console.log("cookie set");
+    console.log("User logged in successfully");
+
     return res.status(200).json({
       message: "User logged in successfully",
       user: {
@@ -82,7 +88,6 @@ const login = async (req, res) => {
         email: user.email,
       },
     });
-    console.log("User logged in successfully");
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
   }
