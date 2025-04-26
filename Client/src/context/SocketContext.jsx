@@ -20,7 +20,11 @@ export const SocketProvider = ({ children }) => {
       return;
     }
 
-    const socketInstance = io("https://my-first-chat-app-lemon.vercel.app", {
+    const URL =
+      import.meta.env.MODE === "production"
+        ? "https://my-first-chat-app-lemon.vercel.app"
+        : "http://localhost:5000";
+    const socketInstance = io(URL, {
       query: {
         userId: user.id,
       },
@@ -36,7 +40,7 @@ export const SocketProvider = ({ children }) => {
     return () => {
       socketInstance.disconnect();
     };
-  }, [user]); // Only runs when user changes
+  }, [user]);
 
   return (
     <SocketContext.Provider value={{ socket, onlineUsers }}>
