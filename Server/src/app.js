@@ -42,3 +42,4 @@ app.use("/api/auth", userRouter);
 app.use("/api/message", MessageRouter);
 
 module.exports = app;
+module.exports.handler = app;
