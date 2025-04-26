@@ -15,8 +15,7 @@ app.use(cookies());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const origin =
-  process.env.CORS_ORIGIN || "https://splendorous-tarsier-f73e0a.netlify.app/";
+const origin = "https://splendorous-tarsier-f73e0a.netlify.app/";
 app.use(
   cors({
     origin: origin,
