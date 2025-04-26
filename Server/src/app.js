@@ -16,26 +16,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions = {
-  origin: ["https://rrfirstchatapp.netlify.app"],
+  origin: ["http://localhost:5173", "https://rrfirstchatapp.netlify.app"],
   methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // ✅ Preflight support
-
-// ✅ Manual CORS headers
-app.use((req, res, next) => {
-  res.header(
-    "Access-Control-Allow-Origin",
-    "https://rrfirstchatapp.netlify.app"
-  );
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
 
 const io = new Server(server, {
   cors: corsOptions,
@@ -56,4 +42,3 @@ app.use("/api/auth", userRouter);
 app.use("/api/message", MessageRouter);
 
 module.exports = app;
-module.exports.handler = app; // ✅ For Vercel serverless
