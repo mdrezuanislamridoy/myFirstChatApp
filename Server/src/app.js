@@ -15,19 +15,16 @@ app.use(cookies());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const origin = "https://rrfirstchatapp.netlify.app/";
-app.use(
-  cors({
-    origin: origin,
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: ["https://rrfirstchatapp.netlify.app"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
 const io = new Server(server, {
-  cors: {
-    origin: origin,
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
+  cors: corsOptions,
 });
 
 MessageSocket.initSocket(io);
