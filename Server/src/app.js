@@ -15,7 +15,7 @@ app.use(cookies());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const origin = "https://splendorous-tarsier-f73e0a.netlify.app/";
+const origin = "https://rrfirstchatapp.netlify.app/";
 app.use(
   cors({
     origin: origin,
