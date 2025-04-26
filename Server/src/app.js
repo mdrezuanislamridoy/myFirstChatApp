@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const server = require("http").createServer(app);
+const http = require("http");
+const server = http.createServer(app);
 const { Server } = require("socket.io");
 const MessageSocket = require("../sockets/MessageSocket");
 require("dotenv").config();
@@ -17,7 +18,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // for preflight
+app.options("*", cors(corsOptions));
 
 app.use((req, res, next) => {
   res.header(
@@ -53,5 +54,4 @@ app.get("/", (req, res) => {
 app.use("/api/auth", userRouter);
 app.use("/api/message", MessageRouter);
 
-module.exports = app;
-module.exports.handler = app;
+module.exports = server; // এবার server export করো
