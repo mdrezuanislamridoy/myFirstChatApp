@@ -10,11 +10,6 @@ const database = require("../config/database");
 const userRouter = require("../Authentication/AuthRoutes");
 const MessageRouter = require("../MessageService/MessageRoutes");
 
-database();
-app.use(cookies());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
 const corsOptions = {
   origin: ["http://localhost:5173", "https://rrfirstchatapp.netlify.app"],
   methods: ["GET", "POST", "PUT", "DELETE"],
@@ -22,6 +17,11 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+database();
+app.use(cookies());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const io = new Server(server, {
   cors: corsOptions,
