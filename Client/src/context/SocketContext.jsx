@@ -20,7 +20,7 @@ export const SocketProvider = ({ children }) => {
       return;
     }
 
-    const socketInstance = io("http://localhost:5000", {
+    const socketInstance = io("https://my-first-chat-app-lemon.vercel.app/", {
       query: {
         userId: user.id,
       },

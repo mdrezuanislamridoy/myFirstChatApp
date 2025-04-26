@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const AxiosInstance = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://my-first-chat-app-lemon.vercel.app/api",
   withCredentials: true,
 });
 
