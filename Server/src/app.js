@@ -11,12 +11,24 @@ const userRouter = require("../Authentication/AuthRoutes");
 const MessageRouter = require("../MessageService/MessageRoutes");
 
 const corsOptions = {
-  origin: ["http://localhost:5173", "https://rrfirstchatapp.netlify.app"],
+  origin: ["https://rrfirstchatapp.netlify.app"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 };
 
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // for preflight
+
+app.use((req, res, next) => {
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://rrfirstchatapp.netlify.app"
+  );
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
 
 database();
 app.use(cookies());
