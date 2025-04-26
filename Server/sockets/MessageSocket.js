@@ -3,9 +3,9 @@ const users = {}; // Maps userId => socketId
 let ioInstance = null;
 
 const initSocket = (io) => {
+  ioInstance = io; // এই লাইন অবশ্যই যোগ করো!!
   io.on("connection", (socket) => {
     const userId = socket.handshake.query.userId;
-
     if (userId) {
       users[userId] = socket.id;
       io.emit("getOnlineUsers", Object.keys(users));
@@ -18,7 +18,6 @@ const initSocket = (io) => {
       if (receiverSocketId) {
         io.to(receiverSocketId).emit("newMessage", message);
       }
-
       if (senderSocketId) {
         io.to(senderSocketId).emit("newMessage", message);
       }

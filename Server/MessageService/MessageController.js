@@ -33,21 +33,6 @@ const sendMessage = async (req, res) => {
     conversation.messages.push(newMessage._id);
     await Promise.all([conversation.save(), newMessage.save()]);
 
-    // Get socket.io instance and online users
-    const io = getIo();
-    const users = getUsers();
-
-    const receiverSocketId = users[receiverId];
-    const senderSocketId = users[senderId];
-
-    if (receiverSocketId) {
-      io.to(receiverSocketId).emit("newMessage", newMessage);
-    }
-
-    if (senderSocketId) {
-      io.to(senderSocketId).emit("newMessage", newMessage);
-    }
-
     return res.status(200).json({
       message: "Message sent successfully",
       messageData: newMessage,
