@@ -3,8 +3,6 @@ const users = {}; // Maps userId => socketId
 let ioInstance = null;
 
 const initSocket = (io) => {
-  ioInstance = io;
-
   io.on("connection", (socket) => {
     const userId = socket.handshake.query.userId;
 
@@ -27,7 +25,7 @@ const initSocket = (io) => {
     });
 
     socket.on("disconnect", () => {
-      if (userId) {
+      if (userId && users[userId] === socket.id) {
         delete users[userId];
         io.emit("getOnlineUsers", Object.keys(users));
       }
@@ -37,7 +35,6 @@ const initSocket = (io) => {
 
 const getUsers = () => users;
 
-// 👇 This is what you were missing:
 const getIo = () => ioInstance;
 
 module.exports = {

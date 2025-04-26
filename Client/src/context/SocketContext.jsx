@@ -12,28 +12,31 @@ export const SocketProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    let socketInstance;
-
-    if (user) {
-      socketInstance = io("http://localhost:5000", {
-        query: {
-          userId: user.id,
-        },
-      });
-      setSocket(socketInstance);
-
-      socketInstance?.on("getOnlineUsers", (users) => {
-        console.log("Online Users:", users);
-        setOnlineUsers(users);
-      });
+    if (!user) {
+      if (socket) {
+        socket.disconnect();
+        setSocket(null);
+      }
+      return;
     }
 
+    const socketInstance = io("http://localhost:5000", {
+      query: {
+        userId: user.id,
+      },
+    });
+
+    setSocket(socketInstance);
+
+    socketInstance.on("getOnlineUsers", (users) => {
+      console.log("Online Users:", users);
+      setOnlineUsers(users);
+    });
+
     return () => {
-      if (socketInstance) {
-        socketInstance.disconnect();
-      }
+      socketInstance.disconnect();
     };
-  }, [user]);
+  }, [user]); // Only runs when user changes
 
   return (
     <SocketContext.Provider value={{ socket, onlineUsers }}>

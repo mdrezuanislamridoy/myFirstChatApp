@@ -20,10 +20,6 @@ export default function useSendMessage() {
 
       const savedMessage = res.data.messageData;
 
-      // ❌ REMOVE this, let socket handle it
-      // setRealtimeMessages((prev) => [...prev, savedMessage]);
-
-      // ✅ Just emit
       socket.emit("sendMessage", savedMessage);
     } catch (err) {
       console.error(err);
