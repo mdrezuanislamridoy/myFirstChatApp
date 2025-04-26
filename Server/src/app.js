@@ -41,4 +41,4 @@ app.get("/", (req, res) => {
 app.use("/api/auth", userRouter);
 app.use("/api/message", MessageRouter);
 
-module.exports = server;
+module.exports = app;
