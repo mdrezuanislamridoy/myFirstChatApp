@@ -1,12 +1,32 @@
-# React + Vite
+# My Learnings
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- ## zustand :
 
-Currently, two official plugins are available:
+  zustand is a state management library for React. It is a lightweight and easy-to-use library that allows you to manage your application's state in a simple and efficient way.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+  ```
+    import { create } from "zustand";
+    const useConversation = create((set) => ({
+        selectedConversation: null,
+        setSelectedConversation: (selectedConversation) =>
+         set({ selectedConversation }),
+        messages: [],
+        setMessages: (messages) =>
+        set((state) => ({
+            ...state,
+            messages: Array.isArray(messages) ? messages : [],
+        })),
+    }));
 
-## Expanding the ESLint configuration
+    export default useConversation;
+  ```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- ## Custom Contexts
+
+  I've learned here more about context . where to use and how to use it .
+  `I've learned here some more about custom Hooks . How to create . and where to create .`
+
+- ## Get DotEnv Variables
+  ```
+  import.meta.env.NAME
+  ```

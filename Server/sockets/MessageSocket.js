@@ -1,9 +1,8 @@
-// sockets/MessageSocket.js
-const users = {}; // Maps userId => socketId
+const users = {};
 let ioInstance = null;
 
 const initSocket = (io) => {
-  ioInstance = io; // এই লাইন অবশ্যই যোগ করো!!
+  ioInstance = io;
   io.on("connection", (socket) => {
     const userId = socket.handshake.query.userId;
     if (userId) {
