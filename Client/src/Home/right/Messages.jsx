@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import useGetMessages from "../../context/UseGetMessages";
 import useConversation from "../../stateManagement/useConversation";
 import MessageLoading from "../../components/MessageLoading";
-import { useSocket } from "../../context/SocketContext"; // ✅ import socket
+import { useSocket } from "../../context/SocketContext";
+import { AuthContext } from "../../context/MessengerContext";
 
 export default function Messages() {
   const { messages = [], loading, error } = useGetMessages();
@@ -12,6 +13,7 @@ export default function Messages() {
   const { socket } = useSocket();
   const [realtimeMessages, setRealtimeMessages] = useState([]);
   const lastMessage = useRef();
+  const { user } = useContext(AuthContext);
 
   console.log("Messages from hook:", messages, typeof messages);
 
@@ -24,26 +26,30 @@ export default function Messages() {
   }, [messages, realtimeMessages]);
 
   useEffect(() => {
+    setRealtimeMessages([]);
+  }, [selectedConversation?._id]);
+
+  useEffect(() => {
     if (socket) {
-      socket.on("newMessage", (message) => {
-        console.log("📩 Received new message:", message);
+      const handleNewMessage = (message) => {
         if (
           selectedConversation &&
-          [message.sender?.toString(), message.receiver?.toString()].includes(
-            selectedConversation._id?.toString()
-          )
+          ((message.sender === selectedConversation._id &&
+            message.receiver === user.id) ||
+            (message.receiver === selectedConversation._id &&
+              message.sender === user.id))
         ) {
           setRealtimeMessages((prev) => [...prev, message]);
         }
-      });
-    }
+      };
 
-    return () => {
-      if (socket) {
-        socket.off("newMessage");
-      }
-    };
-  }, [socket, selectedConversation]);
+      socket.on("newMessage", handleNewMessage);
+
+      return () => {
+        socket.off("newMessage", handleNewMessage);
+      };
+    }
+  }, [socket, selectedConversation, user.id]);
 
   const combinedMessages = [...(messages || []), ...realtimeMessages];
 
